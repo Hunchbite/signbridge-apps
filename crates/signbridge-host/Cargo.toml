@@ -1,0 +1,24 @@
+[package]
+name = "signbridge-host"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+description = "Browser native-messaging app built on the SignBridge framework"
+
+[[bin]]
+name = "signbridge-host"
+path = "src/main.rs"
+
+[dependencies]
+signbridge = { workspace = true, features = ["pkcs11"] }
+anyhow.workspace = true
+rfd.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+[dev-dependencies]
+signbridge = { workspace = true, features = ["testing"] }

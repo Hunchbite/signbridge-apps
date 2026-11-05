@@ -1,0 +1,23 @@
+[package]
+name = "signbridge-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+description = "Reference CLI for the SignBridge signing framework"
+
+[[bin]]
+name = "signbridge"
+path = "src/main.rs"
+
+[dependencies]
+signbridge = { workspace = true, features = ["pkcs11"] }
+anyhow.workspace = true
+base64.workspace = true
+clap.workspace = true
+hex.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true

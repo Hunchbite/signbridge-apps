@@ -1,0 +1,9 @@
+{
+  "name": "com.hunchbite.signbridge",
+  "description": "SignBridge native messaging host",
+  "path": "C:\\\\Program Files\\\\SignBridge\\\\signbridge-host.exe",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://SIGNBRIDGE_EXTENSION_ID_PLACEHOLDER/"
+  ]
+}

@@ -1,0 +1,44 @@
+# SignBridge Apps
+
+**Hunchbite product layer** on top of the [`signbridge`](https://github.com/Hunchbite/signbridge) framework:
+
+| App | Role |
+|---|---|
+| `signbridge` CLI | Scripts / humans |
+| `signbridge-host` | Chrome/Firefox native-messaging host |
+| `extension/` | Browser extension (page ↔ host) |
+| `packaging/` | Native messaging manifests (Mac / Windows installers later) |
+
+## Setup
+
+Clone next to the framework (path dependency):
+
+```text
+Desktop/Code/
+├── signbridge/          # framework
+└── signbridge-apps/     # this repo
+```
+
+```bash
+cd signbridge-apps
+cargo build -p signbridge-cli -p signbridge-host
+cargo run -p signbridge-cli -- ping
+cargo run -p signbridge-cli -- list
+```
+
+To depend on GitHub instead of the local path, edit the workspace `Cargo.toml`:
+
+```toml
+signbridge = { git = "https://github.com/Hunchbite/signbridge", tag = "v0.1.0" }
+```
+
+## Extension
+
+1. Build `signbridge-host` and install somewhere stable.
+2. Point `packaging/macos/com.hunchbite.signbridge.json` `path` at the binary; set your extension id in `allowed_origins`.
+3. Install the host manifest under Chrome’s `NativeMessagingHosts/`.
+4. Load `extension/` unpacked in `chrome://extensions`.
+
+## Licence
+
+MIT OR Apache-2.0 · [Hunchbite Technologies Private Limited](https://hunchbite.com)

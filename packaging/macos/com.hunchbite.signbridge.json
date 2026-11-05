@@ -1,0 +1,10 @@
+{
+  "name": "com.hunchbite.signbridge",
+  "description": "SignBridge native messaging host",
+  "path": "/Applications/SignBridge.app/Contents/MacOS/signbridge-host",
+  "type": "stdio",
+  "allowed_extensions": ["signbridge@hunchbite.com"],
+  "allowed_origins": [
+    "chrome-extension://SIGNBRIDGE_EXTENSION_ID_PLACEHOLDER/"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "SignBridge",
+  "version": "0.1.0",
+  "description": "Talk to the SignBridge native app to sign document fingerprints with your DSC or OS certificate.",
+  "permissions": ["nativeMessaging", "storage"],
+  "host_permissions": [
+    "https://sign.hunchbite.com/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://sign.hunchbite.com/*",
+        "http://localhost/*",
+        "http://127.0.0.1/*"
+      ],
+      "js": ["content/bridge.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "icons": {
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "SignBridge",
+    "default_icon": {
+      "128": "icons/icon-128.png"
+    }
+  }
+}
