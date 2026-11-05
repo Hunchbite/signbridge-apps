@@ -27,8 +27,9 @@ fn run() -> Result<()> {
         .init();
 
     let config_path = std::env::var_os("SIGNBRIDGE_CONFIG").map(PathBuf::from);
-    let config =
-        AppConfig::load_or_default(config_path.as_deref()).context("load SignBridge config")?;
+    let config = AppConfig::load_or_default(config_path.as_deref())
+        .context("load SignBridge config")?
+        .with_profile_modules();
 
     info!(
         version = signbridge::VERSION,

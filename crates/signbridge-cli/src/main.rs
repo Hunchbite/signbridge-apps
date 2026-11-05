@@ -31,6 +31,8 @@ struct Cli {
 enum Command {
     /// Print framework name + version (same as protocol `ping`).
     Ping,
+    /// Probe PKCS#11 middleware (India / Spain / EU / SoftHSM profiles).
+    Doctor,
     /// List certificates / keys from configured PKCS#11 modules.
     List,
     /// Sign a SHA-256 digest (hex) or the hash of --message / --file.
@@ -71,6 +73,7 @@ fn run() -> Result<()> {
 
     let cli = Cli::parse();
     let mut config = AppConfig::load_or_default(cli.config.as_deref())?;
+    config = config.with_profile_modules();
     config.skip_origin_check = true;
     if let Some(pin) = cli.pin.clone() {
         config.test_pin = Some(pin.clone());
@@ -86,6 +89,10 @@ fn run() -> Result<()> {
     match cli.command {
         Command::Ping => {
             let resp = service.handle(Request::Ping { id: "cli".into() });
+            println!("{}", serde_json::to_string_pretty(&resp)?);
+        }
+        Command::Doctor => {
+            let resp = service.handle(Request::Doctor { id: "cli".into() });
             println!("{}", serde_json::to_string_pretty(&resp)?);
         }
         Command::List => {

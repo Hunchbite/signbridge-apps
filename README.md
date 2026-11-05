@@ -29,8 +29,11 @@ Desktop/Code/
 cd signbridge-apps
 cargo build -p signbridge-cli -p signbridge-host
 cargo run -p signbridge-cli -- ping
+cargo run -p signbridge-cli -- doctor   # India / Spain / EU PKCS#11 modules on this machine
 cargo run -p signbridge-cli -- list
 ```
+
+Web eID / AutoFirma adapters live in the framework (`signbridge-rpc --protocol webeid|afirma`). See https://github.com/Hunchbite/signbridge/blob/main/docs/ADAPTERS.md.
 
 To depend on GitHub instead of the local path, edit the workspace `Cargo.toml`:
 
