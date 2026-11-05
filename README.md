@@ -9,6 +9,12 @@
 | `extension/` | Browser extension (page ↔ host) |
 | `packaging/` | Native messaging manifests (Mac / Windows installers later) |
 
+## Talking to core from any language
+
+The framework repo owns the language-agnostic surfaces (`signbridge-rpc`, C ABI, Python/TS clients). See https://github.com/Hunchbite/signbridge/blob/main/docs/PROTOCOL.md.
+
+This repo adds Hunchbite product UX on top (CLI, browser host, extension).
+
 ## Setup
 
 Clone next to the framework (path dependency):

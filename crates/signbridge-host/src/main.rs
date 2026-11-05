@@ -1,19 +1,16 @@
-//! SignBridge native messaging host — a thin app on top of the framework.
+//! SignBridge native messaging host — thin app on the language-agnostic protocol.
 //!
-//! Speaks Chrome/Firefox native messaging on stdin/stdout:
-//! 4-byte little-endian length prefix + UTF-8 JSON payload.
+//! Same JSON as `signbridge-rpc --framed` (Chrome/Firefox native messaging).
 
 mod confirm;
-mod native_messaging;
 
 use anyhow::{Context, Result};
 use confirm::NativeConfirm;
-use native_messaging::{read_message, write_message};
-use signbridge::protocol::Request;
+use signbridge::ipc::{serve_stdio, Framing};
 use signbridge::{AppConfig, SignService};
 use std::io::{stdin, stdout};
 use std::path::PathBuf;
-use tracing::{error, info};
+use tracing::info;
 use tracing_subscriber::EnvFilter;
 
 fn main() {
@@ -36,38 +33,15 @@ fn run() -> Result<()> {
     info!(
         version = signbridge::VERSION,
         modules = config.pkcs11_modules.len(),
-        "signbridge-host starting (framework app)"
+        "signbridge-host starting"
     );
 
     let service = SignService::new(config, NativeConfirm);
-    let mut input = stdin().lock();
-    let mut output = stdout().lock();
-
-    loop {
-        let raw = match read_message(&mut input) {
-            Ok(Some(msg)) => msg,
-            Ok(None) => {
-                info!("stdin closed; exiting");
-                break;
-            }
-            Err(e) => {
-                error!(error = %e, "failed to read native message");
-                break;
-            }
-        };
-
-        let response = match serde_json::from_slice::<Request>(&raw) {
-            Ok(req) => service.handle(req),
-            Err(e) => signbridge::protocol::Response::err(
-                "0",
-                "protocol",
-                format!("invalid request: {e}"),
-            ),
-        };
-
-        let encoded = serde_json::to_vec(&response)?;
-        write_message(&mut output, &encoded)?;
-    }
-
+    serve_stdio(
+        &service,
+        Framing::NativeMessage,
+        stdin().lock(),
+        stdout().lock(),
+    )?;
     Ok(())
 }
